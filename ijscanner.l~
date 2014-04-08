@@ -1,6 +1,7 @@
 %{
-#include "y.tab.h"
 #include "estruturas.h"
+#include "y.tab.h"
+
 int col=1;
 int line=1;
 int comm_col=0;
