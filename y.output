@@ -1,0 +1,241 @@
+Nonterminals useless in grammar
+
+   DeclMethodField
+   FieldDecl
+   MethodDecl
+   RepVarDecl
+   RepStatement
+   FormalParams
+   CommaTypeID
+   VarDecl
+   CommaId
+   Type
+   Statement
+   Expr
+   Args
+   CommaExpr
+
+
+Terminals unused in grammar
+
+   BOOLLIT
+   INTLIT
+   RELATIONAL
+   EQUALITY
+   OP3
+   OP4
+   BOOL
+   COMMA
+   DOTLENGTH
+   ELSE
+   IF
+   INT
+   PARSEINT
+   PRINT
+   PUBLIC
+   RETURN
+   SEMIC
+   STATIC
+   STRING
+   VOID
+   WHILE
+   RESERVED
+   ASSIGN
+   OR
+   AND
+   NEW
+   NOT
+   CSQUARE
+   OSQUARE
+   CCURV
+   OCURV
+
+
+Rules useless in grammar
+
+    3 DeclMethodField: FieldDecl DeclMethodField
+    4                | MethodDecl DeclMethodField
+    5                | /* empty */
+
+    6 FieldDecl: STATIC VarDecl
+
+    7 MethodDecl: PUBLIC STATIC Type ID OCURV FormalParams CCURV OBRACE RepVarDecl RepStatement CBRACE
+    8           | PUBLIC STATIC Type ID OCURV CCURV OBRACE RepVarDecl RepStatement CBRACE
+    9           | PUBLIC STATIC VOID ID OCURV FormalParams CCURV OBRACE RepVarDecl RepStatement CBRACE
+   10           | PUBLIC STATIC VOID ID OCURV CCURV OBRACE RepVarDecl RepStatement CBRACE
+
+   11 RepVarDecl: VarDecl RepVarDecl
+   12           | /* empty */
+
+   13 RepStatement: Statement RepStatement
+   14             | /* empty */
+
+   15 FormalParams: Type ID CommaTypeID
+   16             | STRING OSQUARE CSQUARE ID
+
+   17 CommaTypeID: COMMA Type ID CommaTypeID
+   18            | /* empty */
+
+   19 VarDecl: Type ID CommaId SEMIC
+
+   20 CommaId: COMMA ID CommaId
+   21        | /* empty */
+
+   22 Type: INT
+   23     | BOOL
+   24     | INT OSQUARE CSQUARE
+   25     | BOOL OSQUARE CSQUARE
+
+   26 Statement: OBRACE RepStatement CBRACE
+   27          | IF OCURV Expr CCURV Statement
+   28          | IF OCURV Expr CCURV Statement ELSE Statement
+   29          | WHILE OCURV Expr CCURV Statement
+   30          | PRINT OCURV Expr CCURV SEMIC
+   31          | ID ASSIGN Expr SEMIC
+   32          | ID OSQUARE Expr CSQUARE ASSIGN Expr SEMIC
+   33          | RETURN SEMIC
+   34          | RETURN Expr SEMIC
+
+   35 Expr: Expr AND Expr
+   36     | Expr OR Expr
+   37     | Expr RELATIONAL Expr
+   38     | Expr EQUALITY Expr
+   39     | Expr OP3 Expr
+   40     | Expr OP4 Expr
+   41     | Expr OSQUARE Expr CSQUARE
+   42     | ID
+   43     | INTLIT
+   44     | BOOLLIT
+   45     | NEW INT OSQUARE Expr CSQUARE
+   46     | NEW BOOL OSQUARE Expr CSQUARE
+   47     | OCURV Expr CCURV
+   48     | Expr DOTLENGTH
+   49     | OP3 Expr
+   50     | NOT Expr
+   51     | PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
+   52     | ID OCURV CCURV
+   53     | ID OCURV Args CCURV
+
+   54 Args: Expr CommaExpr
+
+   55 CommaExpr: COMMA Expr CommaExpr
+   56          | /* empty */
+
+
+Grammar
+
+    0 $accept: Start $end
+
+    1 Start: Program
+
+    2 Program: CLASS ID OBRACE CBRACE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+BOOLLIT (258)
+INTLIT (259)
+ID (260) 2
+RELATIONAL (261)
+EQUALITY (262)
+OP3 (263)
+OP4 (264)
+BOOL (265)
+CBRACE (266) 2
+CLASS (267) 2
+COMMA (268)
+DOTLENGTH (269)
+ELSE (270)
+IF (271)
+INT (272)
+OBRACE (273) 2
+PARSEINT (274)
+PRINT (275)
+PUBLIC (276)
+RETURN (277)
+SEMIC (278)
+STATIC (279)
+STRING (280)
+VOID (281)
+WHILE (282)
+RESERVED (283)
+ASSIGN (284)
+OR (285)
+AND (286)
+NEW (287)
+NOT (288)
+CSQUARE (289)
+OSQUARE (290)
+CCURV (291)
+OCURV (292)
+
+
+Nonterminals, with rules where they appear
+
+$accept (38)
+    on left: 0
+Start (39)
+    on left: 1, on right: 0
+Program (40)
+    on left: 2, on right: 1
+
+
+State 0
+
+    0 $accept: . Start $end
+
+    CLASS  shift, and go to state 1
+
+    Start    go to state 2
+    Program  go to state 3
+
+
+State 1
+
+    2 Program: CLASS . ID OBRACE CBRACE
+
+    ID  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: Start . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 Start: Program .
+
+    $default  reduce using rule 1 (Start)
+
+
+State 4
+
+    2 Program: CLASS ID . OBRACE CBRACE
+
+    OBRACE  shift, and go to state 6
+
+
+State 5
+
+    0 $accept: Start $end .
+
+    $default  accept
+
+
+State 6
+
+    2 Program: CLASS ID OBRACE . CBRACE
+
+    CBRACE  shift, and go to state 7
+
+
+State 7
+
+    2 Program: CLASS ID OBRACE CBRACE .
+
+    $default  reduce using rule 2 (Program)
